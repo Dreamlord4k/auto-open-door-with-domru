@@ -19,7 +19,20 @@ last_open_time = 0
 def open_the_door():
     global last_open_time
     print("\n!!! КОДОВАЯ ФРАЗА РАСПОЗНАНА !!!")
-    # ... остальной код функции ...
+    print("--- Отправляю команду на открытие двери... ---")
+    try:
+        headers = {
+            "Authorization": f"Bearer {ACCESS_TOKEN}",
+            "Content-Type": "application/json; charset=utf-8",
+        }
+        response = requests.post(API_OPEN_DOOR_URL, headers=headers, json=API_OPEN_DOOR_PAYLOAD)
+        if response.status_code == 200:
+            print("--- УСПЕХ! Дверь открыта! ---")
+        else:
+            print(f"--- ОШИБКА! Не удалось открыть дверь. Статус: {response.status_code} ---")
+            print(response.text)
+    except Exception as e:
+        print(f"--- КРИТИЧЕСКАЯ ОШИБКА СЕТИ: {e} ---")
     last_open_time = time.time()
 
 # --- ШАГ 1: ЕДИНОРАЗОВАЯ ЗАГРУЗКА ТЯЖЕЛОЙ МОДЕЛИ ---
